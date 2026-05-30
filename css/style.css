@@ -509,7 +509,7 @@ a{ color: inherit; text-decoration: none; }
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%);
 }
 .cat__num{
@@ -838,7 +838,7 @@ a{ color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
-  align-items: center;
+  align-items: flex-start;
 }
 .editorial__img{
   aspect-ratio: 4/5;
@@ -953,7 +953,7 @@ a{ color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 60px;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
 }
 .skate-zone__media{
@@ -1507,18 +1507,51 @@ a{ color: inherit; text-decoration: none; }
   .skate-zone__inner{ padding: 80px 20px; }
   .info{ padding: 80px 20px; }
   .cta-final{ padding: 70px 20px; }
+  .nav {
+    background: transparent;
+    border-bottom-color: transparent;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .nav.is-scrolled {
+    background: var(--bg-charcoal);
+    border-bottom-color: var(--rule);
+  }
   .nav__inner{ padding: 14px 20px; }
+  .nav__logo span { display: none; }
+  .nav__logo img {
+    width: 64px;
+    height: 64px;
+    border: none;
+    mix-blend-mode: lighten;
+  }
   .nav__links{ display: none; }
   .nav__burger{
     display: flex; flex-direction: column; gap: 4px;
     background: transparent; border: 0; cursor: pointer; padding: 8px;
   }
   .nav__burger span{
-    width: 22px; height: 2px; background: var(--ink); display: block;
+    width: 22px; height: 2px; background: var(--text-cream); display: block;
   }
-  .hero{ padding: 40px 20px 60px; gap: 28px; }
+  .nav__cta{ display: none; }
+  .hero{ 
+    padding: 111px 20px 60px; 
+    gap: 28px; 
+    background-image: linear-gradient(to bottom, rgba(18,18,18,0.65) 0%, rgba(18,18,18,0.95) 100%), url('../images/vans_editorial.jpg');
+    background-size: cover;
+    background-position: center top;
+    margin-top: -71px;
+    z-index: 1;
+  }
+  .hero__right { display: none; }
   .hero__meta{ left: 20px; top: 20px; gap: 12px; font-size: 9px; }
-  .hero__stats{ position: relative; }
+  .hero__stats{ 
+    position: relative; 
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 20px;
+    justify-content: space-between;
+  }
   .marquee__track span{ font-size: 32px; gap: 32px; }
   .about__quote{ font-size: 28px; padding: 22px; }
   .socials{ grid-template-columns: repeat(4, 1fr); gap: 8px; }
@@ -1526,11 +1559,61 @@ a{ color: inherit; text-decoration: none; }
   .skate-zone__bg{ font-size: 200px; }
   .footer__top{ grid-template-columns: 1fr; }
   .footer__bottom{ flex-direction: column; gap: 12px; text-align: center; }
-  .nav__cta{ padding: 8px 12px; font-size: 10px; }
+  .footer__bottom{ flex-direction: column; gap: 12px; text-align: center; }
 }
 
 @media (max-width: 440px){
   .cats{ grid-template-columns: 1fr; }
   .socials{ grid-template-columns: 1fr 1fr; }
   .drop--md, .drop--sm{ grid-column: span 12; }
+}
+
+/* =========================================================
+   CUSTOM SKATE CURSOR
+   Only active on pointer:fine devices (desktops with a mouse).
+   Mobile/touch devices keep the default cursor.
+   ========================================================= */
+@media (pointer: fine) {
+  body,
+  body * {
+    cursor: none !important;
+  }
+}
+
+#skate-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#skate-cursor.is-visible {
+  opacity: 1;
+}
+
+.skate-board {
+  display: block;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85));
+  /* Smooth transition for glow on grind and tilt rotation */
+  transition: filter 0.2s ease, transform 0.25s cubic-bezier(.22,.61,.36,1);
+}
+
+/* Glowing halo while grinding an image edge */
+#skate-cursor.is-grinding .skate-board {
+  filter: drop-shadow(0 0 8px rgba(242, 239, 233, 0.92))
+          drop-shadow(0 0 24px rgba(158, 62, 51, 0.9));
+}
+
+/* Spark particles created in JS during grind */
+.skate-spark {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  border-radius: 50%;
+  background: #F2EFE9;
+  box-shadow: 0 0 4px #F2EFE9, 0 0 10px #ff9944;
 }
